@@ -1,0 +1,23 @@
+import org.testng.Assert;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+public class UserAuthenticationTest {
+
+    @DataProvider(name = "authData")
+    public Object[][] getTestData() {
+        return new Object[][] {
+            {"admin", "password123", true},   // Valid
+            {"admin", "wrongPass", false},    // Invalid password
+            {"", "", false},                  // Empty strings
+            {null, null, false}               // Null values (Requirement 5)
+        };
+    }
+
+    @Test(dataProvider = "authData")
+    public void testAuthentication(String user, String pass, boolean expected) {
+        UserAuthentication auth = new UserAuthentication();
+        boolean actual = auth.authenticate(user, pass);
+        Assert.assertEquals(actual, expected);
+    }
+}
